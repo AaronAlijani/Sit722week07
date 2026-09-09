@@ -104,6 +104,12 @@ jobs:
   frontend-test:
     name: Test frontend
     runs-on: ubuntu-latest
+    env:
+      VITE_USER_SERVICE_URL: http://localhost:8000
+      VITE_STUDENT_SERVICE_URL: http://localhost:8001
+      VITE_LECTURER_SERVICE_URL: http://localhost:8002
+      VITE_COURSE_SERVICE_URL: http://localhost:8003
+      VITE_ENROLLMENT_SERVICE_URL: http://localhost:8004
 
     steps:
 
@@ -111,9 +117,9 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: "20"
+          node-version: "24"
           cache: "npm"
           cache-dependency-path: frontend/package-lock.json
 
@@ -133,7 +139,7 @@ jobs:
     name: Build and Push ${{ matrix.image }}
     runs-on: ubuntu-latest
 
-    # All backend tests must pass before this job starts
+    # All backend and frontend tests must pass before this job starts
     needs:
       - backend-test
       - frontend-test
